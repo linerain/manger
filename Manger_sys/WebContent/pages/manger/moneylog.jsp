@@ -66,7 +66,7 @@
 							multiSelect : true,
 							rowSelect : true,
 							rowCount : 10,
-							navigation : 1,
+							
 							formatters : {
 								"logTime" : function(column, row) {
 									var dataTime = row.datetime;
