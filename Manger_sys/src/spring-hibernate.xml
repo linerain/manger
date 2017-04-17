@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+http://www.springframework.org/schema/tx 
+http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+http://www.springframework.org/schema/aop 
+http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!-- JNDI方式配置数据源 -->
+	<!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"> 
+		<property name="jndiName" value="${jndiName}"></property> </bean> -->
+
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<!-- 链接地址 -->
+		<property name="url" value="${url}" />
+		<!-- 用户名 -->
+		<property name="username" value="${username}" />
+		<!-- 密码 -->
+		<property name="password" value="${password}" />
+		<!-- 扩展插件 -->
+		<property name="filters" value="config" />
+		<!-- 密码加密 -->
+     	<property name="connectionProperties" value="config.decrypt=true;config.decrypt.key=${publickey}" />
+
+		<!-- 最大连接池数量 -->
+		<property name="maxActive" value="100" />
+		<!-- 初始化连接数量 -->
+		<property name="initialSize" value="2" />
+		<!-- 获得链接最大等待时间 -->
+		<property name="maxWait" value="60000" />
+
+		<!-- 链接检测时间间隔 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 链接关闭时间 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+
+		<!-- 链接有效性查询语句 -->
+		<property name="validationQuery" value="${validationQuery}" />
+		<!-- 申请链接前检测链接有效性 不影响性能 -->
+		<property name="testWhileIdle" value="true" />
+		<!-- 申请连接时执行validationQuery检测连接是否有效 影响性能 -->
+		<property name="testOnBorrow" value="false" />
+		<!-- 归还连接时执行validationQuery检测连接是否有效 影响性能 -->
+		<property name="testOnReturn" value="false" />
+		
+	</bean>
+
+
+
+
+
+	<!-- 配置hibernate session工厂 -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<!-- <prop key="hibernate.show_sql">${hibernate.show_sql}</prop> -->
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+			</props>
+		</property>
+
+		<!-- 自动扫描注解方式配置的hibernate类文件 -->
+		<property name="packagesToScan">
+			<list>
+				<value>com.zyytkj.system.model</value>
+				<value>com.zyytkj.manger.model</value>
+			</list>
+		</property>
+
+		<!-- 自动扫描hbm方式配置的hibernate文件和.hbm文件 -->
+		<!-- <property name="mappingDirectoryLocations"> <list> <value>classpath:sy/hbm</value> 
+			</list> </property> -->
+	</bean>
+
+	<!-- 配置事务管理器 -->
+	<bean name="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<!-- 注解方式配置事物 -->
+	<!-- <tx:annotation-driven transaction-manager="transactionManager" /> -->
+
+	<!-- 拦截器方式配置事物 -->
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" />
+			<tx:method name="save*" />
+			<tx:method name="update*" />
+			<tx:method name="modify*" />
+			<tx:method name="edit*" />
+			<tx:method name="delete*" />
+			<tx:method name="remove*" />
+			<tx:method name="repair" />
+			<tx:method name="login"/>
+			<tx:method name="register"/>
+			<tx:method name="uidUpdate" />
+			<tx:method name="uidOffline" />
+			<tx:method name="deleteAndRepair" />
+			<tx:method name="checkOpenDoor" />
+			<tx:method name="findDataReportForms" />
+			<tx:method name="sendMSG" />
+			<tx:method name="automaticMakeForm" />
+			
+			<tx:method name="check*"/>
+			<tx:method name="count*"/>
+			<tx:method name="info*"/>
+			<tx:method name="have*"/>
+			<tx:method name="show*"/>
+			<tx:method name="gdt*"/>
+			<tx:method name="asset*"/>
+			<tx:method name="shutEmail*"/>
+			<tx:method name="shootEmail*"/>
+			<tx:method name="uEqu*"/>
+			<tx:method name="insertListAlarmList"/>
+			<tx:method name="propertyManageUcount"/>
+			<tx:method name="query"/>
+			<tx:method name="setEnable"/>
+			<tx:method name="visitPattern"/>
+			<tx:method name="historyDatas"/>
+			<tx:method name="alarmFusionXml"/>
+			<tx:method name="rePassword"/>
+			<tx:method name="uidOffline"/>
+			<tx:method name="relevanceType"/>
+			<tx:method name="move"/>
+			<tx:method name="createObject"/>
+			<tx:method name="forceDelete"/>
+			<tx:method name="makeExcel"/>
+			<tx:method name="leaveReadExcel"/>
+			<tx:method name="repsirinstock"/>
+			<tx:method name="scrapresult"/>
+			<tx:method name="makeExcel"/>
+			<tx:method name="numberEncode"/>
+			<tx:method name="verificationExcel"/>
+			<tx:method name="propertyManageUcount"/>
+			<tx:method name="AssetAtU"/>
+			<tx:method name="rolback"/>
+			<tx:method name="lightDevice"/>
+			<tx:method name="upsAndVolPage"/>
+			<tx:method name="adminResetPassword"/>
+			<tx:method name="send*" propagation="SUPPORTS"/>
+			<tx:method name="change*" propagation="SUPPORTS"/>
+			<tx:method name="read*" propagation="SUPPORTS"/>
+			<tx:method name="numberEncode" propagation="SUPPORTS"/>
+			<tx:method name="copy*" propagation="SUPPORTS"/>
+			<tx:method name="is*" propagation="SUPPORTS"/>
+			<tx:method name="set*" propagation="SUPPORTS"/>
+			<tx:method name="query*" propagation="SUPPORTS"/>
+			<tx:method name="uid*" propagation="SUPPORTS"/>
+			<tx:method name="init*" propagation="SUPPORTS"/>
+			
+			
+			<tx:method name="shootEmail" />
+			<tx:method name="shootEmailByDownAsset" />
+
+			<tx:method name="get*" propagation="SUPPORTS" />
+			<tx:method name="find*" propagation="SUPPORTS" />
+			<tx:method name="load*" propagation="SUPPORTS" />
+			<tx:method name="search*" propagation="SUPPORTS" />
+			<tx:method name="datagrid*" propagation="SUPPORTS" />
+			<tx:method name="*" propagation="SUPPORTS" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="transactionPointcut"
+			expression="execution(* com.zyytkj.*.service..*Impl.*(..))" />
+		<aop:advisor pointcut-ref="transactionPointcut"
+			advice-ref="transactionAdvice" />
+	</aop:config>
+
+
+	<!-- 配置druid监控spring jdbc -->
+	<bean id="druid-stat-interceptor"
+		class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
+	</bean>
+	<bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut"
+		scope="prototype">
+		<property name="patterns">
+			<list>
+				<value>com.zyytkj.system.service.*</value>
+				<value>com.zyytkj.manger.service.*</value>
+				<!-- <value>com.zyytkj.vms.util.*</value> -->
+			</list>
+		</property>
+	</bean>
+	<aop:config>
+		<aop:advisor advice-ref="druid-stat-interceptor"
+			pointcut-ref="druid-stat-pointcut" />
+	</aop:config>
+
+	
+</beans>

@@ -1,0 +1,16 @@
+ body, html, div, blockquote, img, label, p, h1, h2, h3, h4, h5, h6, pre, ul, ol,
+li, dl, dt, dd, form, a, fieldset, input, th, td
+{margin: 0; padding: 0; border: 0; outline: none;}
+body{font-size: 14px;font-family:'MicroSoft YaHei';background:#fff;}
+h1, h2, h3, h4, h5, h6{font-size: 100%;padding: .6em 0;}
+ul{list-style: none;}
+a{color: black;text-decoration: none;}
+a:hover{text-decoration: none;}
+*{ -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+input[type="text"],input[type="submit"],input[type="reset"],input[type="button"],button{
+	-webkit-appearance: none}
+input:focus {outline: 0;border-color: #fff;box-shadow: none}
+:focus {outline: 0}
+a:link,a:focus,a:active,a:visited,.btn.active.focus,.btn.active:focus,.btn.focus,
+.btn:active.focus,.btn:active:focus,.btn:focus,.btn.active,.btn:active{
+	text-decoration: none;outline: 0;box-shadow: none;-webkit-box-shadow: none}

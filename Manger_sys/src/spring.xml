@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+http://www.springframework.org/schema/context 
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/task  
+http://www.springframework.org/schema/task/spring-task-3.1.xsd  
+">
+	<!-- 注解支持 -->  
+	<context:annotation-config/>  
+	<!-- 组件扫描com.test目录下的所有文件 -->  
+	<context:component-scan base-package="com.zyytkj.**"/>
+
+	<!-- 引入属性文件 -->
+	<context:property-placeholder location="classpath:config.properties" />
+
+	<!-- 自动扫描dao和service包(自动注入) -->
+<!-- 	<context:component-scan
+		base-package="com.zyytkj.**" /> -->
+
+	<!-- 启动设备管理控制器 -->
+	<!-- 
+	 -->
+    <!--spring定时器-->
+    	<!--
+    <task:annotation-driven/>
+    <context:annotation-config/>  
+	 <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>  
+	 <context:component-scan base-package="com.zyyt.common.action"/>  
+	  
+  <bean class="com.zyytkj.common.listener.DMonManagerController"></bean> 
+    
+ 	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<import resource="cxfxml/*.xml" />  -->
+</beans>
