@@ -79,7 +79,7 @@ public class GetMoneyLogServiceImpl implements GetMoneyLogServiceI {
 	}
 
 	@Override
-	public Object[] findByPage(Integer page, Integer rows, int state, String userId) {
+	public Object[] findByPage(Integer page, Integer rows, int state, String userId, String search) {
 		String hql = " from GetMoneyLog where 1 = 1 ";
 		List<Object> param = new ArrayList<>();
 		if (state != -1) {
@@ -92,6 +92,15 @@ public class GetMoneyLogServiceImpl implements GetMoneyLogServiceI {
 			param.add(userId);
 		}
 
+		if (search != null && !search.equals("")) {
+			hql += " and ( name like ? or idCard like ? or phone like ? or cardNum like ? or cardAddr like ? or remark like ? ) ";
+			param.add("%" + search + "%");
+			param.add("%" + search + "%");
+			param.add("%" + search + "%");
+			param.add("%" + search + "%");
+			param.add("%" + search + "%");
+			param.add("%" + search + "%");
+		}
 		hql += " order by logTime desc ";
 
 		List<GetMoneyLog> logs = this.getMoneyLogDao.find(hql, param, page, rows);

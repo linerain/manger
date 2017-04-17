@@ -16,7 +16,7 @@ public interface GetMoneyLogServiceI {
 	
 	GetMoneyLog findById(String id);
 	
-	Object[] findByPage(Integer page, Integer rows ,int state,String userId);
+	Object[] findByPage(Integer page, Integer rows ,int state,String userId,String search);
 	
 	List<ExcelPageModel> findForExcel(int state);
 

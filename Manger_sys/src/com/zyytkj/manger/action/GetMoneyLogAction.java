@@ -39,6 +39,7 @@ public class GetMoneyLogAction extends BaseAction {
 		String userId = request.getParameter("userId");
 		try {
 			dataMap = new HashMap<String, Object>();
+			String search = request.getParameter("searchPhrase");
 			Integer pageSize = Integer.parseInt(this.request.getParameter("rowCount"));
 			Integer pageNumber = Integer.parseInt(this.request.getParameter("current"));
 			Integer stateNum;
@@ -49,7 +50,7 @@ public class GetMoneyLogAction extends BaseAction {
 			}
 			User user = (User) session.get("user");
 
-			Object[] objs = getMoneyLogService.findByPage(pageNumber, pageSize, stateNum, userId);
+			Object[] objs = getMoneyLogService.findByPage(pageNumber, pageSize, stateNum, userId, search);
 
 			dataMap.put("rows", objs[0]);
 			dataMap.put("total", objs[1]);
@@ -61,7 +62,6 @@ public class GetMoneyLogAction extends BaseAction {
 
 		return SUCCESS;
 	}
-	
 
 	public String pass() {
 		dataMap = new HashMap<String, Object>();
@@ -82,7 +82,7 @@ public class GetMoneyLogAction extends BaseAction {
 		}
 		return "success";
 	}
-	
+
 	public String stop() {
 		dataMap = new HashMap<String, Object>();
 		User userObj = (User) session.get("user");
@@ -102,8 +102,8 @@ public class GetMoneyLogAction extends BaseAction {
 		}
 		return "success";
 	}
-	
-	public void downExcel(){
+
+	public void downExcel() {
 		String state = request.getParameter("state");
 		Integer stateNum;
 		if (state != null && !state.equals("")) {
@@ -112,19 +112,20 @@ public class GetMoneyLogAction extends BaseAction {
 			stateNum = -1;
 		}
 		List<ExcelPageModel> logs = this.getMoneyLogService.findForExcel(stateNum);
-		
+
 		ExportExcel<ExcelPageModel> exp = new ExportExcel<>();
 		String path = ServletActionContext.getServletContext().getRealPath("/Cousom.xls");
 		System.out.println(path);
-		exp.exportExcel("客户提现申请单", new String[]{"用户","身份证","手机","提现额（元）","银行卡号","开户地址","申请时间","状态"}, logs, path);
+		exp.exportExcel("客户提现申请单", new String[] { "用户", "身份证", "手机", "提现额（元）", "银行卡号", "开户地址", "申请时间", "状态" }, logs,
+				path);
 		UploadOrDownLoad.downLoad(path, this.response);
-		
+
 	}
 
 	public String moneyLogAction() {
 		return "moneylog";
 	}
-	
+
 	public Map<String, Object> getDataMap() {
 		return dataMap;
 	}
